@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "844974075217",
+    "project_id": "login-backend-dd943",
+    "storage_bucket": "login-backend-dd943.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:844974075217:android:6b84b87c673ddcaf8ef770",
+        "android_client_info": {
+          "package_name": "com.example.backend_flutter"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC0RR2BtrEOGFQCJQ0Bgq9zd59Z5HwZkLo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:844974075217:android:758f22ea6b7f23158ef770",
+        "android_client_info": {
+          "package_name": "com.example.mylogin"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC0RR2BtrEOGFQCJQ0Bgq9zd59Z5HwZkLo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

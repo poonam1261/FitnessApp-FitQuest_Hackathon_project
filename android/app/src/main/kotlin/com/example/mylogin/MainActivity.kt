@@ -1,4 +1,4 @@
-package com.codeforany.fitness
+package com.example.mylogin
 
 import io.flutter.embedding.android.FlutterActivity
 
