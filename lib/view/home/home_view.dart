@@ -1,6 +1,10 @@
 import 'package:dotted_dashed_line/dotted_dashed_line.dart';
 import 'package:fitness/common_widget/round_button.dart';
 import 'package:fitness/common_widget/workout_row.dart';
+import 'package:fitness/view/activity_recognition/activity_recognition_view.dart';
+import 'package:fitness/view/home/chat_bot.dart';
+// import 'package:fitness/view/health_tracker/health_tracker_view.dart';
+import 'package:fitness/view/step_tracker/step_tracker_view.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:simple_animation_progress_bar/simple_animation_progress_bar.dart';
@@ -131,7 +135,7 @@ class _HomeViewState extends State<HomeView> {
                           style: TextStyle(color: TColor.gray, fontSize: 12),
                         ),
                         Text(
-                          "Stefani Wong",
+                          "User",
                           style: TextStyle(
                               color: TColor.black,
                               fontSize: 20,
@@ -252,6 +256,9 @@ class _HomeViewState extends State<HomeView> {
                             fontWeight: FontWeight.w700),
                       ),
                       SizedBox(
+                        height: media.height * 0.05,
+                      ),
+                      SizedBox(
                         width: 70,
                         height: 25,
                         child: RoundButton(
@@ -276,160 +283,119 @@ class _HomeViewState extends State<HomeView> {
                 SizedBox(
                   height: media.width * 0.05,
                 ),
-                Text(
-                  "Activity Status",
-                  style: TextStyle(
-                      color: TColor.black,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w700),
-                ),
-                SizedBox(
-                  height: media.width * 0.02,
-                ),
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(25),
-                  child: Container(
-                    height: media.width * 0.4,
-                    width: double.maxFinite,
-                    decoration: BoxDecoration(
-                      color: TColor.primaryColor2.withOpacity(0.3),
-                      borderRadius: BorderRadius.circular(25),
-                    ),
+                Center(
                     child: Stack(
-                      alignment: Alignment.topLeft,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 20, horizontal: 20),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            mainAxisSize: MainAxisSize.min,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                "Heart Rate",
-                                style: TextStyle(
-                                    color: TColor.black,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w700),
-                              ),
-                              ShaderMask(
-                                blendMode: BlendMode.srcIn,
-                                shaderCallback: (bounds) {
-                                  return LinearGradient(
-                                          colors: TColor.primaryG,
-                                          begin: Alignment.centerLeft,
-                                          end: Alignment.centerRight)
-                                      .createShader(Rect.fromLTRB(
-                                          0, 0, bounds.width, bounds.height));
-                                },
-                                child: Text(
-                                  "78 BPM",
-                                  style: TextStyle(
-                                      color: TColor.white.withOpacity(0.7),
-                                      fontWeight: FontWeight.w700,
-                                      fontSize: 18),
-                                ),
-                              ),
-                            ],
-                          ),
+                  alignment: AlignmentDirectional.center,
+                  children: [
+                    SimpleCircularProgressBar(
+                      progressStrokeWidth: 10,
+                      backStrokeWidth: 10,
+                      progressColors: TColor.primaryG,
+                      backColor: Colors.grey.shade100,
+                      valueNotifier: ValueNotifier(20),
+                      startAngle: -180,
+                    ),
+                    SimpleCircularProgressBar(
+                      progressStrokeWidth: 10,
+                      backStrokeWidth: 10,
+                      progressColors: TColor.secondaryG,
+                      backColor: Colors.grey.shade100,
+                      valueNotifier: ValueNotifier(50),
+                      startAngle: -180,
+                      size: 140,
+                    ),
+                    const Center(
+                        child: Text(
+                      'Check \n your \n Progress',
+                      style: TextStyle(fontSize: 10),
+                      textAlign: TextAlign.center,
+                    )),
+                  ],
+                )),
+                SizedBox(
+                  height: media.width * 0.05,
+                ),
+                Center(
+                  child: ElevatedButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const StepCounterView(),
                         ),
-                        LineChart(
-                          LineChartData(
-                            showingTooltipIndicators:
-                                showingTooltipOnSpots.map((index) {
-                              return ShowingTooltipIndicators([
-                                LineBarSpot(
-                                  tooltipsOnBar,
-                                  lineBarsData.indexOf(tooltipsOnBar),
-                                  tooltipsOnBar.spots[index],
-                                ),
-                              ]);
-                            }).toList(),
-                            lineTouchData: LineTouchData(
-                              enabled: true,
-                              handleBuiltInTouches: false,
-                              touchCallback: (FlTouchEvent event,
-                                  LineTouchResponse? response) {
-                                if (response == null ||
-                                    response.lineBarSpots == null) {
-                                  return;
-                                }
-                                if (event is FlTapUpEvent) {
-                                  final spotIndex =
-                                      response.lineBarSpots!.first.spotIndex;
-                                  showingTooltipOnSpots.clear();
-                                  setState(() {
-                                    showingTooltipOnSpots.add(spotIndex);
-                                  });
-                                }
-                              },
-                              mouseCursorResolver: (FlTouchEvent event,
-                                  LineTouchResponse? response) {
-                                if (response == null ||
-                                    response.lineBarSpots == null) {
-                                  return SystemMouseCursors.basic;
-                                }
-                                return SystemMouseCursors.click;
-                              },
-                              getTouchedSpotIndicator:
-                                  (LineChartBarData barData,
-                                      List<int> spotIndexes) {
-                                return spotIndexes.map((index) {
-                                  return TouchedSpotIndicatorData(
-                                    FlLine(
-                                      color: Colors.red,
-                                    ),
-                                    FlDotData(
-                                      show: true,
-                                      getDotPainter:
-                                          (spot, percent, barData, index) =>
-                                              FlDotCirclePainter(
-                                        radius: 3,
-                                        color: Colors.white,
-                                        strokeWidth: 3,
-                                        strokeColor: TColor.secondaryColor1,
-                                      ),
-                                    ),
-                                  );
-                                }).toList();
-                              },
-                              touchTooltipData: LineTouchTooltipData(
-                                tooltipBgColor: TColor.secondaryColor1,
-                                tooltipRoundedRadius: 20,
-                                getTooltipItems:
-                                    (List<LineBarSpot> lineBarsSpot) {
-                                  return lineBarsSpot.map((lineBarSpot) {
-                                    return LineTooltipItem(
-                                      "${lineBarSpot.x.toInt()} mins ago",
-                                      const TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 10,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    );
-                                  }).toList();
-                                },
-                              ),
-                            ),
-                            lineBarsData: lineBarsData,
-                            minY: 0,
-                            maxY: 130,
-                            titlesData: FlTitlesData(
-                              show: false,
-                            ),
-                            gridData: FlGridData(show: false),
-                            borderData: FlBorderData(
-                              show: true,
-                              border: Border.all(
-                                color: Colors.transparent,
-                              ),
-                            ),
-                          ),
-                        )
-                      ],
+                      );
+                    },
+                    child: const Text(
+                      'Step Counter',
+                      style: TextStyle(
+                        fontSize: 20,
+                      ),
                     ),
                   ),
+                ),
+                SizedBox(
+                  height: media.width * 0.025,
+                ),
+                Center(
+                  child: ElevatedButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const ActivityRecognitionView(),
+                        ),
+                      );
+                    },
+                    child: const Text(
+                      'Activity Recognition',
+                      style: TextStyle(
+                        fontSize: 20,
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: media.width * 0.025,
+                ),
+                Center(
+                  child: ElevatedButton(
+                    onPressed: () async {
+                      await Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (BuildContext context) =>
+                              const ChatbotPage(),
+                        ),
+                      );
+                    },
+                    child: const Text(
+                      'On-the-go Chat Assistant',
+                      style: TextStyle(
+                        fontSize: 20,
+                      ),
+                    ),
+                  ),
+                ),
+                // Center(
+                //   child: TextButton(
+                //     onPressed: () {
+                //       Navigator.push(
+                //         context,
+                //         MaterialPageRoute(
+                //           builder: (context) => const HealthTrackerView(),
+                //         ),
+                //       );
+                //     },
+                //     child: const Text(
+                //       'Health Tracker',
+                //       style: TextStyle(
+                //         fontSize: 20,
+                //       ),
+                //     ),
+                //   ),
+                // ),
+                SizedBox(
+                  height: media.width * 0.02,
                 ),
                 SizedBox(
                   height: media.width * 0.05,
@@ -524,8 +490,8 @@ class _HomeViewState extends State<HomeView> {
                                               margin:
                                                   const EdgeInsets.symmetric(
                                                       vertical: 4),
-                                              width: 10,
-                                              height: 10,
+                                              width: 9,
+                                              height: 9,
                                               decoration: BoxDecoration(
                                                 color: TColor.secondaryColor1
                                                     .withOpacity(0.5),
@@ -607,7 +573,7 @@ class _HomeViewState extends State<HomeView> {
                           width: double.maxFinite,
                           height: media.width * 0.45,
                           padding: const EdgeInsets.symmetric(
-                              vertical: 25, horizontal: 20),
+                              vertical: 23, horizontal: 20),
                           decoration: BoxDecoration(
                               color: Colors.white,
                               borderRadius: BorderRadius.circular(25),

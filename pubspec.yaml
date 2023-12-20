@@ -49,6 +49,20 @@ dependencies:
   firebase_auth: ^4.15.3
   cloud_firestore: ^4.13.6
   firebase_analytics: ^10.7.4
+  pedometer: ^4.0.1
+  geolocator: ^10.1.0
+  activity_recognition_flutter: ^5.0.0
+  permission_handler: ^11.1.0 
+  flutter_activity_recognition: ^3.0.0
+  firebase_storage: ^11.5.6
+  firebase_database: ^10.3.8
+  flutter_launcher_icons: ^0.13.1
+  webview_flutter: ^4.4.2
+
+flutter_icons:
+  image_path: "assets/img/daily-health-app.png"
+  android: true
+  ios: true
 
 dependency_overrides: 
   intl: ^0.18.1

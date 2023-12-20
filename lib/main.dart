@@ -1,9 +1,23 @@
-import 'package:fitness/view/main_tab/main_tab_view.dart';
+import 'package:fitness/services/auth/auth_service.dart';
+import 'package:fitness/view/home/home_view.dart';
+import 'package:fitness/view/login/login_view.dart';
+import 'package:fitness/view/login/signup_view.dart';
+import 'package:fitness/view/login/verify_email_view.dart';
+import 'package:fitness/view/on_boarding/started_view.dart';
 import 'package:flutter/material.dart';
-import 'common/colo_extension.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(MaterialApp(
+    debugShowCheckedModeBanner: false,
+    title: "Fit Quest",
+    home: const MyApp(),
+    routes: {
+      '/login/': (context) => const LoginView(),
+      '/register/': (context) => const SignUpView(),
+      '/home/': (context) => const HomeView(),
+      '/verify-email/': (context) => const VerifyEmailView(),
+    },
+  ));
 }
 
 class MyApp extends StatelessWidget {
@@ -12,14 +26,25 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Fitness 3 in 1',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        primaryColor: TColor.primaryColor1,
-        fontFamily: "Poppins",
-      ),
-      home: const MainTabView(),
+    return FutureBuilder(
+      future: AuthService.firebase().initialize(),
+      builder: (context, snapshot) {
+        switch (snapshot.connectionState) {
+          case ConnectionState.done:
+            final user = AuthService.firebase().currentUser;
+            if (user != null) {
+              if (user.isEmailVerified) {
+                return const LoginView();
+              } else {
+                return const VerifyEmailView();
+              }
+            } else {
+              return const StartedView();
+            }
+          default:
+            return const CircularProgressIndicator();
+        }
+      },
     );
   }
 }

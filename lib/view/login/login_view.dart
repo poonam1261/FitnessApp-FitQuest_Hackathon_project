@@ -1,7 +1,11 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:fitness/common/colo_extension.dart';
 import 'package:fitness/common_widget/round_button.dart';
 import 'package:fitness/common_widget/round_textfield.dart';
-import 'package:fitness/view/login/complete_profile_view.dart';
+import 'package:fitness/services/auth/auth_exceptions.dart';
+import 'package:fitness/services/auth/auth_service.dart';
+import 'package:fitness/utilities/show_error_dialog.dart';
 import 'package:flutter/material.dart';
 
 class LoginView extends StatefulWidget {
@@ -60,8 +64,10 @@ class _LoginViewState extends State<LoginView> {
                 SizedBox(
                   height: media.width * 0.04,
                 ),
-                const RoundTextField(
+                RoundTextField(
                   hitText: "Email",
+                  enableSuggestions: true,
+                  controller: _email,
                   icon: "assets/img/email.png",
                   keyboardType: TextInputType.emailAddress,
                 ),
@@ -70,6 +76,8 @@ class _LoginViewState extends State<LoginView> {
                 ),
                 RoundTextField(
                   hitText: "Password",
+                  controller: _password,
+                  enableSuggestions: false,
                   icon: "assets/img/lock.png",
                   obscureText: true,
                   rigtIcon: TextButton(
@@ -89,7 +97,38 @@ class _LoginViewState extends State<LoginView> {
                 const Spacer(),
                 RoundButton(
                   title: "Login",
-                  onPressed: () {},
+                  onPressed: () async {
+                    final email = _email.text;
+                    final password = _password.text;
+                    try {
+                      await AuthService.firebase().logIn(
+                        email: email,
+                        password: password,
+                      );
+                      final user = AuthService.firebase().currentUser;
+                      if (user?.isEmailVerified ?? false) {
+                        Navigator.of(context).pushNamedAndRemoveUntil(
+                          '/home/',
+                          (route) => false,
+                        );
+                      } else {
+                        await Navigator.of(context).pushNamedAndRemoveUntil(
+                          '/verify-email/',
+                          (route) => false,
+                        );
+                      }
+                    } on UserNotFoundAuthException {
+                      await showErrorDialog(
+                        context,
+                        'User not found!',
+                      );
+                    } on GenericAuthException {
+                      await showErrorDialog(
+                        context,
+                        'Incorrect email or password',
+                      );
+                    }
+                  },
                 ),
                 SizedBox(
                   height: media.width * 0.04,
@@ -114,13 +153,12 @@ class _LoginViewState extends State<LoginView> {
                           fontSize: 14,
                         ),
                       ),
-                      Text(
-                        "Register",
-                        style: TextStyle(
-                            color: TColor.black,
-                            fontSize: 14,
-                            fontWeight: FontWeight.w700),
-                      )
+                      TextButton(
+                          onPressed: () {
+                            Navigator.of(context).pushNamedAndRemoveUntil(
+                                '/register/', (route) => false);
+                          },
+                          child: const Text('Register here!'))
                     ],
                   ),
                 ),

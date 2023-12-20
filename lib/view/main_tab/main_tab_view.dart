@@ -18,7 +18,7 @@ class MainTabView extends StatefulWidget {
 
 class _MainTabViewState extends State<MainTabView> {
   int selectTab = 0;
-  final PageStorageBucket pageBucket = PageStorageBucket(); 
+  final PageStorageBucket pageBucket = PageStorageBucket();
   Widget currentTab = const HomeView();
   @override
   Widget build(BuildContext context) {
@@ -41,10 +41,15 @@ class _MainTabViewState extends State<MainTabView> {
                 borderRadius: BorderRadius.circular(35),
                 boxShadow: const [
                   BoxShadow(
-                      color: Colors.black12,
-                      blurRadius: 2,)
+                    color: Colors.black12,
+                    blurRadius: 2,
+                  )
                 ]),
-            child: Icon(Icons.search,color: TColor.white, size: 35, ),
+            child: Icon(
+              Icons.search,
+              color: TColor.white,
+              size: 35,
+            ),
           ),
         ),
       ),
@@ -79,15 +84,16 @@ class _MainTabViewState extends State<MainTabView> {
                     setState(() {});
                   }
                 }),
-
-              const  SizedBox(width: 40,),
+            const SizedBox(
+              width: 40,
+            ),
             TabButton(
                 icon: "assets/img/camera_tab.png",
                 selectIcon: "assets/img/camera_tab_select.png",
                 isActive: selectTab == 2,
                 onTap: () {
                   selectTab = 2;
-                   currentTab = const PhotoProgressView();
+                  currentTab = const PhotoProgressView();
                   if (mounted) {
                     setState(() {});
                   }
@@ -98,7 +104,7 @@ class _MainTabViewState extends State<MainTabView> {
                 isActive: selectTab == 3,
                 onTap: () {
                   selectTab = 3;
-                   currentTab = const ProfileView();
+                  currentTab = const ProfileView();
                   if (mounted) {
                     setState(() {});
                   }

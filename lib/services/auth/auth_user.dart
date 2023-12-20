@@ -8,3 +8,5 @@ class AuthUser {
 
   factory AuthUser.fromFirebase(User user) => AuthUser(user.emailVerified);
 }
+
+mixin isLoggedIn {}
