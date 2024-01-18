@@ -1,5 +1,5 @@
 # Fitness Tracker-Pedometer,HAR(Human Activity Recognition) and Chatbot
-##Table of Contents
+## Table of Contents
 * [General info](#general-info)
 * [Technologies](#technologies)
 * [Setup](#setup)
