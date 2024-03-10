@@ -19,4 +19,5 @@ My contributions included:
 - For setup, follow the official documentaion at [Flutter Docs](https://docs.flutter.dev/)
 
 UI UX App Design by: [Pixel True](https://www.pixeltrue.com/free-ui-kits/fitness-app-ui-kit)
+Applied some additional and unique features to UI/UX design using Figma.
 
